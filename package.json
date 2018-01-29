@@ -1,0 +1,15 @@
+{
+  "name": "movieexplorer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mycode.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alaa",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.6.8",
+    "jquery": "^3.3.1"
+  }
+}

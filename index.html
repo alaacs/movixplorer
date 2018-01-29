@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+  <title>Movie Explorer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+  <script src="../node_modules/angular/angular.js"></script>
+
+</head>
+
+<body ng-controller="MovieExplorerController as movieExplorerController">
+  <div data-role="page" id="home">
+    <div data-role="header">
+      <h1>Movie Explorer</h1>
+      <a id="refresh" href="#" data-icon="recycle" class="ui-btn-right">Refresh</a>
+    </div>
+    <div data-role="content">
+      <select class="custom-select" id="selectListType" ng-model="selectedListType" ng-change="listType_change()">
+            <option value="now" selected>Now Playing</option>
+            <option value="top">Top Rated</option>
+            <option value="search">
+              Search ...
+            </option>
+      </select>
+      <input ng-show="isSearchEnabled" class="form-control" id="inputdefault" ng-model= "searchWord"
+          type="text" placeholder="Search for movie .." ng-change= "searchWord_change()" >
+      <ul id="movies_list" data-role="listview" style="padding-top:15px">
+        <li ng-repeat="movie in movies track by movie.id">
+          <a id="to_details" href="#">
+            <img ng-src="https://image.tmdb.org/t/p/w500{{movie.backdrop_path?movie.backdrop_path: movie.poster_path}}" />
+            {{movie.title}}
+            <span id="{{movie.id}}" class="ui-li-count">{{movie.vote_average}}</span>
+          <a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div data-role="page" id="details">
+    <div data-role="header" data-add-back-btn="true">
+      <h1>Station Details</h1>
+    </div>
+    <div data-role="content">
+      <img id="stationIcon" />
+      <h4 id="stationName"></h4>
+      <ul data-role="listview" data-inset="true">
+        <li><span id="stationDescription"></span></li>
+        <li><span id="stationTemp"></span></li>
+        <li><span id="stationHumidity"></span></li>
+        <li><span id="stationPressure"></span></li>
+      </ul>
+
+    </div>
+
+  </div>
+
+</body>
+
+<script src="mycode.js"></script>
+
+</html>
