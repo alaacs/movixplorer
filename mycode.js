@@ -2,8 +2,7 @@ var app = angular.module("app", []);
 
 app.controller("MovieExplorerController", ["$scope", function($scope) { //Global Variables
 
-  $scope.Google_key = "AIzaSyDBRx0crV33B-rLPoQr7SkYl4_ZrUOZzig";
-  $scope.OWP_key = "8c8a482f0c519bcc56bf79715ea71154";
+  $scope.Google_key = "AIzaSyBSYJineItD-3w2sILaHt6gMMn_Ypl2iE8";
   $scope.The_moviedb_key = "8fda7e69773f31a9895946fa43028f9b";
   $scope.langId = "en-US";
   $scope.langParam = "language";
@@ -11,14 +10,16 @@ app.controller("MovieExplorerController", ["$scope", function($scope) { //Global
   $scope.base_url = "https://api.themoviedb.org/3/";
   $scope.image_base_url = "https://image.tmdb.org/t/p/w500/";
   $scope.imdb_base_url = "http://www.imdb.com/title/";
+  $scope.google_geocode_url = "https://maps.googleapis.com/maps/api/geocode/json";
+  $scope.google_api_key_param = "key";
+  $scope.google_api_address_param = "address";
+  $scope.google_api_lang_param = "language";
   $scope.nowPlaying_urlPart = "movie/now_playing";
   $scope.topRated_urlPart = "movie/top_rated";
   $scope.search_urlPart = "search/movie";
   $scope.movieDetail_urlPart = "movie/";
   $scope.searcQueryParam = "query";
   $scope.default_search_url_params = "page=1&include_adult=false";
-  $scope.currentStation;
-  $scope.stations;
 
   //option "top" => for getting top rated movies
   //option "now" => for getting now playing movies
@@ -71,17 +72,22 @@ app.controller("MovieExplorerController", ["$scope", function($scope) { //Global
         console.log(uniqueCountries);
         var addressSearchPromises = [];
 
-        var provider = new window.GeoSearch.GoogleProvider({
-          params: {
-            key: 'AIzaSyBSYJineItD-3w2sILaHt6gMMn_Ypl2iE8',
-          },
-        });
+        var geocode_url = $scope.google_geocode_url + "?" + $scope.google_api_key_param + "=" + $scope.Google_key + "&" +
+          $scope.google_api_lang_param + "=" + $scope.langId;
+        // var provider = new window.GeoSearch.GoogleProvider({
+        //   params: {
+        //     key: 'AIzaSyBSYJineItD-3w2sILaHt6gMMn_Ypl2iE8',
+        //   },
+        // });
 
         uniqueCountries.map(function(country) {
           if (country)
-            addressSearchPromises.push(provider.search({
-              query: country
-            }));
+            addressSearchPromises.push(
+              $.get(geocode_url + "&" + $scope.google_api_address_param + "=" + country)
+              //   provider.search({
+              //   query: country
+              // })
+            );
         });
         if (addressSearchPromises)
           Promise.all(addressSearchPromises).then(function(res) {
@@ -92,9 +98,9 @@ app.controller("MovieExplorerController", ["$scope", function($scope) { //Global
               if (mov.production_countries && mov.production_countries.length > 0) {
                 var movAddress = $scope.getCountryCoordinatesByName(res, mov.production_countries[0]);
                 mov.location = {
-                  x: movAddress.x,
-                  y: movAddress.y,
-                  label: movAddress.label
+                  lat: movAddress.geometry.location.lat,
+                  lng: movAddress.geometry.location.lng,
+                  label: movAddress.formatted_address
                 };
               }
             }
@@ -105,9 +111,9 @@ app.controller("MovieExplorerController", ["$scope", function($scope) { //Global
   }
   $scope.getCountryCoordinatesByName = function(addressList, country) {
     for (var i = 0; i < addressList.length; i++) {
-      var add = addressList[i][0].label;
+      var add = addressList[i].results[0].formatted_address;
       if (add.toLowerCase().indexOf(country.name.toLowerCase()) > -1 || country.name.toLowerCase().indexOf(add.toLowerCase()) > -1)
-        return addressList[i][0];
+        return addressList[i].results[0];
     }
     return null;
   }
@@ -133,28 +139,36 @@ app.controller("MovieExplorerController", ["$scope", function($scope) { //Global
       $scope.loadMap();
     });
     $(document).on("click", "#to_details", function(e) {
-      if(e.target && angular.element(e.target) && angular.element(e.target).scope())
+      if (e.target && angular.element(e.target) && angular.element(e.target).scope())
         $scope.currentMovie = angular.element(e.target).scope().movie;
-        $scope.loadMovieDetails();
+      $scope.loadMovieDetails();
     });
   });
-  $scope.loadMovieDetails = function(){
+  $scope.loadMovieDetails = function() {
     $('#movieName').text($scope.currentMovie.title);
     $('#movieTagline').text('Tagline: ' + $scope.currentMovie.tagline);
-    $('#movieRating').text($scope.currentMovie.vote_average);
-    $('#movieStarRating').css("width", $scope.currentMovie.vote_average / 10 * 100 + "%");
-    $('#movieStarRating').attr("title", $scope.currentMovie.vote_average)
-    $('#movieCountry').text('Country: ' + $scope.currentMovie.location.label);
+    if ($scope.currentMovie.vote_count > 5) {
+      $('#movieRating').text($scope.currentMovie.vote_average);
+      $('#movieStarRating').css("width", $scope.currentMovie.vote_average / 10 * 100 + "%");
+      $('#movieStarRating').attr("title", $scope.currentMovie.vote_average);
+    }
+    else{
+      $('#movieRating').text("unrated");
+      $('#movieStarRating').css("width", "0%");
+      $('#movieStarRating').attr("title", "unrated");
+    }
+    if ($scope.currentMovie.location)
+      $('#movieCountry').text('Country: ' + $scope.currentMovie.location.label);
     $('#movieReleaseDate').text('ReleaseDate: ' + $scope.currentMovie.release_date);
     $('#movieRevenue').text('Revenue: ' + $scope.currentMovie.revenue + ' USD');
     $('#movieOverview').text('Overview: ' + $scope.currentMovie.overview);
     $('#movieIcon').attr('src', $scope.image_base_url + $scope.currentMovie.poster_path);
-    $('#movieGenre').text('Genres: ' + $scope.currentMovie.genres.map(g=>g.name).join(', '));
+    $('#movieGenre').text('Genres: ' + $scope.currentMovie.genres.map(g => g.name).join(', '));
     $('#website').attr('href', $scope.currentMovie.homepage);
-    $('#website').text( $scope.currentMovie.homepage);
+    $('#website').text($scope.currentMovie.homepage);
     $('#imdb').attr('href', $scope.imdb_base_url + $scope.currentMovie.imdb_id);
-    $('#spokenLanguage').text('Spoken Languages: ' + $scope.currentMovie.spoken_languages.map(g=>g.name).join(', '));
-    $('#productionCompany').text('Production Company: ' + $scope.currentMovie.production_companies.map(g=>g.name).join(', '));
+    $('#spokenLanguage').text('Spoken Languages: ' + $scope.currentMovie.spoken_languages.map(g => g.name).join(', '));
+    $('#productionCompany').text('Production Company: ' + $scope.currentMovie.production_companies.map(g => g.name).join(', '));
     console.log($scope.currentMovie);
   }
   $scope.loadMap = function() {
@@ -176,11 +190,11 @@ app.controller("MovieExplorerController", ["$scope", function($scope) { //Global
     for (var i = 0; i < $scope.movies.length; i++) {
       var mov = $scope.movies[i];
       if (mov.location) {
-        var marker = L.marker(L.latLng(mov.location.y, mov.location.x));
+        var marker = L.marker(L.latLng(mov.location.lat, mov.location.lng));
         marker.bindPopup("<a target='_blank' href= '" + $scope.imdb_base_url + mov.imdb_id + "'><b>" + mov.title + "</b></a><br>Rating:" + mov.vote_average + "<br>Produced in: " + mov.location.label +
           "");
-        if (!bounds.some(item => item[1] == mov.location.x && item[0] == mov.location.y))
-          bounds.push([mov.location.y, mov.location.x]);
+        if (!bounds.some(item => item[1] == mov.location.lng && item[0] == mov.location.lat))
+          bounds.push([mov.location.lat, mov.location.lng]);
         markerList.push(marker);
       }
     }
