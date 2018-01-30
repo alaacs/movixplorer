@@ -41,7 +41,7 @@
       <ul id="movies_list" data-role="listview" style="padding-top:15px">
         <li ng-repeat="movie in movies track by movie.id">
           <a id="to_details" href="#details">
-            <img ng-src="https://image.tmdb.org/t/p/w500{{movie.backdrop_path?movie.backdrop_path: movie.poster_path}}" />
+            <img ng-src="{{movie.backdrop_path?'https://image.tmdb.org/t/p/w500'+movie.backdrop_path: (movie.poster_path!=null)?'https://image.tmdb.org/t/p/w500'+movie.poster_path: ''}}" />
             {{movie.title}}
             <span id="{{movie.id}}" class="ui-li-count">{{movie.vote_average}}</span>
           </a>
