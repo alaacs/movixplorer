@@ -1,0 +1,29 @@
+{
+  "name": "MovieExplorer",
+  "version": "1.0.0",
+  "description": "---\r ## Website Url: http://movixplorer.co.nf\r ### The application is browsing movie in three ways.\r   * Now playing\r   It's showing a list of recent movies showing in the cinemas\r   * Top rated\r   It's showing a list of the movies with the best rates\r   * search\r   User can type in search query to search within a huge movies database from all over the world",
+  "main": "mycode.js",
+  "dependencies": {
+    "angular": "^1.6.9",
+    "bootstrap": "^4.0.0",
+    "jquery": "^1.9.1",
+    "jquery-mobile": "^1.4.0",
+    "leaflet": "^1.3.1",
+    "leaflet-markercluster": "^0.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alaacs/movixplorer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alaacs/movixplorer/issues"
+  },
+  "homepage": "https://github.com/alaacs/movixplorer#readme"
+}
