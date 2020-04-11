@@ -2,7 +2,7 @@ var app = angular.module("app", []);
 
 app.controller("MovieExplorerController", ["$scope", function($scope) { //Global Variables
 
-  $scope.Google_key = "AIzaSyBSYJineItD-3w2sILaHt6gMMn_Ypl2iE8";
+  $scope.Google_key = "AIzaSyCPe86pgqVleLA8an9nV7fH49hLs-sdjZ4";
   $scope.The_moviedb_key = "8fda7e69773f31a9895946fa43028f9b";
   $scope.langId = "en-US";
   $scope.langParam = "language";
@@ -97,11 +97,14 @@ app.controller("MovieExplorerController", ["$scope", function($scope) { //Global
               var mov = $scope.movies[i];
               if (mov.production_countries && mov.production_countries.length > 0) {
                 var movAddress = $scope.getCountryCoordinatesByName(res, mov.production_countries[0]);
-                mov.location = {
-                  lat: movAddress.geometry.location.lat,
-                  lng: movAddress.geometry.location.lng,
-                  label: movAddress.formatted_address
-                };
+                if(movAddress && movAddress.geometry)
+                {
+                  mov.location = {
+                    lat: movAddress.geometry.location.lat,
+                    lng: movAddress.geometry.location.lng,
+                    label: movAddress.formatted_address
+                  };
+                }
               }
             }
           });
@@ -111,9 +114,12 @@ app.controller("MovieExplorerController", ["$scope", function($scope) { //Global
   }
   $scope.getCountryCoordinatesByName = function(addressList, country) {
     for (var i = 0; i < addressList.length; i++) {
-      var add = addressList[i].results[0].formatted_address;
-      if (add.toLowerCase().indexOf(country.name.toLowerCase()) > -1 || country.name.toLowerCase().indexOf(add.toLowerCase()) > -1)
-        return addressList[i].results[0];
+      if(!addressList[i].error_message && addressList[i].results.length > 0)
+      {
+        var add = addressList[i].results[0].formatted_address;
+        if (add.toLowerCase().indexOf(country.name.toLowerCase()) > -1 || country.name.toLowerCase().indexOf(add.toLowerCase()) > -1)
+          return addressList[i].results[0];
+      }
     }
     return null;
   }
