@@ -1,6 +1,6 @@
 # movixplorer
 ---
-## Website Url: http://movixplorer.co.nf
+## Website Url: http://www.alaabakry.com/movixplorer/
 ### The application is browsing movie in three ways.
   * Now playing
   It's showing a list of recent movies showing in the cinemas
