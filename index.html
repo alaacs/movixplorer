@@ -5,19 +5,19 @@
   <title>Movie Explorer</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="./node_modules/jquery-mobile/dist/jquery.mobile.css" />
-  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css" />
-  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
-  <script src="./node_modules/jquery-mobile/dist/jquery.mobile.js"></script>
+  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
   <!-- <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script> -->
-  <script src="./node_modules/angular/angular.min.js"></script>
-  <link rel="stylesheet" href="./node_modules/leaflet/dist/leaflet.css"/>
-  <script src="./node_modules/leaflet/dist/leaflet.js" ></script>
-  <link rel="stylesheet" href="./node_modules/leaflet-markercluster/MarkerCluster.css" />
-  <link rel="stylesheet" href="./node_modules/leaflet-markercluster/MarkerCluster.Default.css" />
-  <script src="./node_modules/leaflet-markercluster/leaflet.markercluster-src.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/MarkerCluster.Default.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
 
   <!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
@@ -39,7 +39,7 @@
     <div data-role="header">
       <h1>Movie Explorer</h1>
       <!-- <a id="refresh" href="#" data-icon="recycle" class="ui-btn-right">Refresh</a> -->
-      <a id="btnMap" data-icon="recycle" class="ui-btn-right">Map</a>
+      <!-- <a id="btnMap" data-icon="recycle" class="ui-btn-right">Map</a> -->
     </div>
     <div data-role="content">
       <select class="custom-select" id="selectListType" ng-model="selectedListType" ng-change="listType_change()">
