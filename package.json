@@ -4,7 +4,7 @@
   "description": "---\r ## Website Url: http://movixplorer.co.nf\r ### The application is browsing movie in three ways.\r   * Now playing\r   It's showing a list of recent movies showing in the cinemas\r   * Top rated\r   It's showing a list of the movies with the best rates\r   * search\r   User can type in search query to search within a huge movies database from all over the world",
   "main": "mycode.js",
   "dependencies": {
-    "angular": "^1.6.9",
+    "angular": "^1.8.0",
     "bootstrap": "^4.0.0",
     "jquery": "^1.9.1",
     "jquery-mobile": "^1.4.0",
